@@ -1,5 +1,5 @@
 from django.contrib import admin
-from .models import Apartment, Amenities, Location
+from .models import Apartment, Amenities, Location, Parking
 # from .models import Location, Amenities, Apartment, Commercial, Parking, PredictionResults
 
 @admin.register(Location)
@@ -24,11 +24,11 @@ class ApartmentAdmin(admin.ModelAdmin):
 #     search_fields = ('property_name', 'type')
 #     list_filter = ('type', 'amenities')
 
-# @admin.register(Parking)
-# class ParkingAdmin(admin.ModelAdmin):
-#     list_display = ('id', 'property_name', 'type', 'parking', 'available', 'price', 'tenant_services_coordinator', 'resident_managers', 'commercial_property_manager')
-#     search_fields = ('property_name', 'type', 'available')
-#     list_filter = ('type',)
+@admin.register(Parking)
+class ParkingAdmin(admin.ModelAdmin):
+    list_display = ('id', 'location', 'type', 'available', 'price', 'tenant_services_coordinator', 'resident_managers', 'commercial_property_manager', 'email', 'website', 'tel', 'fax', 'term', 'termination_policy', 'deposit')
+    search_fields = ('price', 'type', 'available')
+    list_filter = ('type',)
 
 # @admin.register(PredictionResults)
 # class PredictionResultsAdmin(admin.ModelAdmin):
