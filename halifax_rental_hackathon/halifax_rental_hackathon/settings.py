@@ -38,7 +38,8 @@ INSTALLED_APPS = [
     'django.contrib.messages',
     'django.contrib.staticfiles',
     'llm_core',
-    'scrapers'
+    'scrapers',
+    'django_extensions'
 ]
 
 MIDDLEWARE = [
