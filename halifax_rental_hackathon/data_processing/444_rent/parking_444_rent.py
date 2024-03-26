@@ -50,7 +50,7 @@ class Parking_444_Rent:
 
 if __name__ == '__main__':
     RAW_CSV = "D:/hackathon/Data-Analytics-Hackathon/halifax_rental_hackathon/scrapers/444_rent/parking_444_rent.csv"
-    CLEAN_CSV = 'clean_parking_444_rent.csv'
+    CLEAN_CSV = '../clean_data/clean_parking_444_rent.csv'
 
     parking_444_rent = Parking_444_Rent(RAW_CSV, CLEAN_CSV)
     # Extract data
