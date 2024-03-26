@@ -1,4 +1,5 @@
 # src/transform.py
+import re
 import pandas as pd
 from src.logger import log_progress
 
@@ -55,7 +56,7 @@ def clean_price(value):
 # Clean the 'Size (sqft)' column
 def clean_sqft(value):
     if value == "Not Available":
-        return value
+        return None
     else:
         try:
             return float(str(value).replace(',', ''))
@@ -86,6 +87,14 @@ def convert_yes_no_to_bool(df, columns):
     # Convert 'yes' to True, 'no' and 'not available' to False
     df[col].replace({'yes': True, 'no': False, 'not available': False}, inplace=True)
   return df
+
+# Define a function to extract postal codes
+def extract_postal_code(address):
+    postal_code = re.findall(r'\b[A-Z]\d[A-Z] \d[A-Z]\d\b', address)
+    if postal_code:
+        return postal_code[0]
+    else:
+        return None
 
 def transform(df):
     
@@ -170,4 +179,14 @@ def transform(df):
         print (message)
     print('move_in_date', ": ", df['move_in_date'].dtype, df['move_in_date'].count())
     
+    # Apply the function to the 'address' column and create a new column 'postal_code'
+    df['postal_code'] = df['address'].apply(extract_postal_code)
+    print('postal_code', ": ", df['postal_code'].dtype, df['postal_code'].count())
+    
+    # Calculate rate per square foot
+    df['rate_per_sqft'] = df['price'] / df['size_sqft']
+
+    # Round rate_per_sqft to 2 decimal places
+    df['rate_per_sqft'] = df['rate_per_sqft'].round(2)
+    print('rate_per_sqft', ": ", df['rate_per_sqft'].dtype, df['rate_per_sqft'].count())
     return df
