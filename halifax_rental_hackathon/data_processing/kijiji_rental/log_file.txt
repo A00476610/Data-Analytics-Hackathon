@@ -1,0 +1,161 @@
+2024-Mar-25-21:56:02 : Preliminaries complete. Initiating ETL process.
+2024-Mar-25-21:56:02 : ETL Job Started
+2024-Mar-25-21:56:02 : Extract phase Started
+2024-Mar-25-21:56:02 : Extract phase Ended
+2024-Mar-25-21:56:02 : Transform phase Started
+2024-Mar-25-21:56:02 : Dropping column 'company'
+2024-Mar-25-21:57:27 : Preliminaries complete. Initiating ETL process.
+2024-Mar-25-21:57:27 : ETL Job Started
+2024-Mar-25-21:57:27 : Extract phase Started
+2024-Mar-25-21:57:27 : Extract phase Ended
+2024-Mar-25-21:57:27 : Transform phase Started
+2024-Mar-25-21:57:34 : Preliminaries complete. Initiating ETL process.
+2024-Mar-25-21:57:34 : ETL Job Started
+2024-Mar-25-21:57:34 : Extract phase Started
+2024-Mar-25-21:57:34 : Extract phase Ended
+2024-Mar-25-21:57:34 : Transform phase Started
+2024-Mar-25-21:57:34 : Dropping column 'company'
+2024-Mar-25-21:58:38 : Preliminaries complete. Initiating ETL process.
+2024-Mar-25-21:58:38 : ETL Job Started
+2024-Mar-25-21:58:38 : Extract phase Started
+2024-Mar-25-21:58:38 : Extract phase Ended
+2024-Mar-25-21:58:38 : Transform phase Started
+2024-Mar-25-21:58:38 : Dropping column 'company'
+2024-Mar-25-21:59:12 : Preliminaries complete. Initiating ETL process.
+2024-Mar-25-21:59:12 : ETL Job Started
+2024-Mar-25-21:59:12 : Extract phase Started
+2024-Mar-25-21:59:12 : Extract phase Ended
+2024-Mar-25-21:59:12 : Transform phase Started
+2024-Mar-25-21:59:12 : Dropping column 'company'
+2024-Mar-25-21:59:20 : Preliminaries complete. Initiating ETL process.
+2024-Mar-25-21:59:20 : ETL Job Started
+2024-Mar-25-21:59:20 : Extract phase Started
+2024-Mar-25-21:59:20 : Extract phase Ended
+2024-Mar-25-21:59:20 : Transform phase Started
+2024-Mar-25-21:59:20 : Dropping column 'company'
+2024-Mar-25-22:03:22 : Preliminaries complete. Initiating ETL process.
+2024-Mar-25-22:03:22 : ETL Job Started
+2024-Mar-25-22:03:22 : Extract phase Started
+2024-Mar-25-22:03:22 : Extract phase Ended
+2024-Mar-25-22:03:22 : Transform phase Started
+2024-Mar-25-22:03:22 : Dropping column 'company'
+2024-Mar-25-22:03:48 : Preliminaries complete. Initiating ETL process.
+2024-Mar-25-22:03:48 : ETL Job Started
+2024-Mar-25-22:03:48 : Extract phase Started
+2024-Mar-25-22:03:48 : Extract phase Ended
+2024-Mar-25-22:03:48 : Transform phase Started
+2024-Mar-25-22:03:48 : Dropping column 'company'
+2024-Mar-25-22:04:06 : Preliminaries complete. Initiating ETL process.
+2024-Mar-25-22:04:06 : ETL Job Started
+2024-Mar-25-22:04:06 : Extract phase Started
+2024-Mar-25-22:04:06 : Extract phase Ended
+2024-Mar-25-22:04:06 : Transform phase Started
+2024-Mar-25-22:04:06 : Dropping column 'company'
+2024-Mar-25-22:06:02 : Preliminaries complete. Initiating ETL process.
+2024-Mar-25-22:06:02 : ETL Job Started
+2024-Mar-25-22:06:02 : Extract phase Started
+2024-Mar-25-22:06:02 : Extract phase Ended
+2024-Mar-25-22:06:02 : Transform phase Started
+2024-Mar-25-22:06:02 : Dropping column 'company'
+2024-Mar-25-22:06:25 : Preliminaries complete. Initiating ETL process.
+2024-Mar-25-22:06:25 : ETL Job Started
+2024-Mar-25-22:06:25 : Extract phase Started
+2024-Mar-25-22:06:25 : Extract phase Ended
+2024-Mar-25-22:06:25 : Transform phase Started
+2024-Mar-25-22:06:25 : Dropping column 'company'
+2024-Mar-25-22:06:25 : Dropping column 'elevator_accessibility_features'
+2024-Mar-25-22:06:25 : Warning: Some values in the 'price' could not be converted to numbers:price
+2024-Mar-25-22:06:25 : Warning: Some values in the 'num_parking' could not be converted to numbers:Parking Included
+2024-Mar-25-22:06:25 : Warning: Some values in the 'size_sqft' could not be converted to numbers:<class 'ValueError'>
+2024-Mar-25-22:06:25 : Warning: Some values in the 'num_bedroom' could not be converted to numbers:<class 'ValueError'>
+2024-Mar-25-22:06:25 : Warning: Some values in the move_in_date could not be converted to numbers:<class 'ValueError'>
+2024-Mar-25-22:06:25 : Transform phase Ended
+2024-Mar-25-22:06:25 : Load to csv phase Started
+2024-Mar-25-22:06:46 : Preliminaries complete. Initiating ETL process.
+2024-Mar-25-22:06:46 : ETL Job Started
+2024-Mar-25-22:06:46 : Extract phase Started
+2024-Mar-25-22:06:46 : Extract phase Ended
+2024-Mar-25-22:06:46 : Transform phase Started
+2024-Mar-25-22:06:46 : Dropping column 'company'
+2024-Mar-25-22:06:46 : Dropping column 'elevator_accessibility_features'
+2024-Mar-25-22:06:46 : Warning: Some values in the 'price' could not be converted to numbers:price
+2024-Mar-25-22:06:46 : Warning: Some values in the 'num_parking' could not be converted to numbers:Parking Included
+2024-Mar-25-22:06:46 : Warning: Some values in the 'size_sqft' could not be converted to numbers:<class 'ValueError'>
+2024-Mar-25-22:06:46 : Warning: Some values in the 'num_bedroom' could not be converted to numbers:<class 'ValueError'>
+2024-Mar-25-22:06:46 : Warning: Some values in the move_in_date could not be converted to numbers:<class 'ValueError'>
+2024-Mar-25-22:06:46 : Transform phase Ended
+2024-Mar-25-22:06:46 : Load to csv phase Started
+2024-Mar-25-22:08:25 : Preliminaries complete. Initiating ETL process.
+2024-Mar-25-22:08:25 : ETL Job Started
+2024-Mar-25-22:08:25 : Extract phase Started
+2024-Mar-25-22:08:25 : Extract phase Ended
+2024-Mar-25-22:08:25 : Transform phase Started
+2024-Mar-25-22:08:25 : Dropping column 'company'
+2024-Mar-25-22:08:25 : Dropping column 'elevator_accessibility_features'
+2024-Mar-25-22:08:25 : Warning: Some values in the 'price' could not be converted to numbers:price
+2024-Mar-25-22:08:25 : Warning: Some values in the 'num_parking' could not be converted to numbers:Parking Included
+2024-Mar-25-22:08:25 : Warning: Some values in the 'size_sqft' could not be converted to numbers:<class 'ValueError'>
+2024-Mar-25-22:08:26 : Warning: Some values in the 'num_bedroom' could not be converted to numbers:<class 'ValueError'>
+2024-Mar-25-22:08:26 : Warning: Some values in the move_in_date could not be converted to numbers:<class 'ValueError'>
+2024-Mar-25-22:08:26 : Transform phase Ended
+2024-Mar-25-22:08:26 : Load to csv phase Started
+2024-Mar-25-22:08:31 : Preliminaries complete. Initiating ETL process.
+2024-Mar-25-22:08:31 : ETL Job Started
+2024-Mar-25-22:08:31 : Extract phase Started
+2024-Mar-25-22:08:31 : Extract phase Ended
+2024-Mar-25-22:08:31 : Transform phase Started
+2024-Mar-25-22:08:31 : Dropping column 'company'
+2024-Mar-25-22:08:31 : Dropping column 'elevator_accessibility_features'
+2024-Mar-25-22:08:31 : Warning: Some values in the 'price' could not be converted to numbers:price
+2024-Mar-25-22:08:31 : Warning: Some values in the 'num_parking' could not be converted to numbers:Parking Included
+2024-Mar-25-22:08:31 : Warning: Some values in the 'size_sqft' could not be converted to numbers:<class 'ValueError'>
+2024-Mar-25-22:08:32 : Warning: Some values in the 'num_bedroom' could not be converted to numbers:<class 'ValueError'>
+2024-Mar-25-22:08:32 : Warning: Some values in the move_in_date could not be converted to numbers:<class 'ValueError'>
+2024-Mar-25-22:08:32 : Transform phase Ended
+2024-Mar-25-22:08:32 : Load to csv phase Started
+2024-Mar-25-22:09:11 : Preliminaries complete. Initiating ETL process.
+2024-Mar-25-22:09:11 : ETL Job Started
+2024-Mar-25-22:09:11 : Extract phase Started
+2024-Mar-25-22:09:11 : Extract phase Ended
+2024-Mar-25-22:09:11 : Transform phase Started
+2024-Mar-25-22:09:11 : Dropping column 'company'
+2024-Mar-25-22:09:11 : Dropping column 'elevator_accessibility_features'
+2024-Mar-25-22:09:11 : Warning: Some values in the 'price' could not be converted to numbers:price
+2024-Mar-25-22:09:11 : Warning: Some values in the 'num_parking' could not be converted to numbers:Parking Included
+2024-Mar-25-22:09:11 : Warning: Some values in the 'size_sqft' could not be converted to numbers:<class 'ValueError'>
+2024-Mar-25-22:09:11 : Warning: Some values in the 'num_bedroom' could not be converted to numbers:<class 'ValueError'>
+2024-Mar-25-22:09:11 : Warning: Some values in the move_in_date could not be converted to numbers:<class 'ValueError'>
+2024-Mar-25-22:09:11 : Transform phase Ended
+2024-Mar-25-22:09:11 : Load to csv phase Started
+2024-Mar-25-22:09:14 : Preliminaries complete. Initiating ETL process.
+2024-Mar-25-22:09:14 : ETL Job Started
+2024-Mar-25-22:09:14 : Extract phase Started
+2024-Mar-25-22:09:14 : Extract phase Ended
+2024-Mar-25-22:09:14 : Transform phase Started
+2024-Mar-25-22:09:14 : Dropping column 'company'
+2024-Mar-25-22:09:14 : Dropping column 'elevator_accessibility_features'
+2024-Mar-25-22:09:14 : Warning: Some values in the 'price' could not be converted to numbers:price
+2024-Mar-25-22:09:14 : Warning: Some values in the 'num_parking' could not be converted to numbers:Parking Included
+2024-Mar-25-22:09:14 : Warning: Some values in the 'size_sqft' could not be converted to numbers:<class 'ValueError'>
+2024-Mar-25-22:09:14 : Warning: Some values in the 'num_bedroom' could not be converted to numbers:<class 'ValueError'>
+2024-Mar-25-22:09:14 : Warning: Some values in the move_in_date could not be converted to numbers:<class 'ValueError'>
+2024-Mar-25-22:09:14 : Transform phase Ended
+2024-Mar-25-22:09:14 : Load to csv phase Started
+2024-Mar-25-22:09:44 : Preliminaries complete. Initiating ETL process.
+2024-Mar-25-22:09:44 : ETL Job Started
+2024-Mar-25-22:09:44 : Extract phase Started
+2024-Mar-25-22:09:44 : Extract phase Ended
+2024-Mar-25-22:09:44 : Transform phase Started
+2024-Mar-25-22:09:44 : Dropping column 'company'
+2024-Mar-25-22:09:44 : Dropping column 'elevator_accessibility_features'
+2024-Mar-25-22:09:44 : Transform phase Ended
+2024-Mar-25-22:09:44 : Load to csv phase Started
+2024-Mar-25-22:16:12 : Preliminaries complete. Initiating ETL process.
+2024-Mar-25-22:16:12 : ETL Job Started
+2024-Mar-25-22:16:12 : Extract phase Started
+2024-Mar-25-22:16:12 : Extract phase Ended
+2024-Mar-25-22:16:12 : Transform phase Started
+2024-Mar-25-22:16:12 : Dropping column 'company'
+2024-Mar-25-22:16:12 : Dropping column 'elevator_accessibility_features'
+2024-Mar-25-22:16:12 : Transform phase Ended
+2024-Mar-25-22:16:12 : Load to csv phase Started
