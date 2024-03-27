@@ -43,6 +43,11 @@ class Apartment(models.Model):
     num_bathrooms = models.FloatField(blank=True, null=True, default=0)
     # image_link = models.URLField(blank=True, default='')
     size_sqft = models.CharField(blank=True, null=True, default=0)
+    postal_code = models.CharField(blank=True, null=True, default=0)
+    rate_per_sqft = models.FloatField(blank=True, null=True, default=0)
+    lat = models.CharField(blank=True, null=True, default=0)
+    long = models.CharField(blank=True, null=True, default=0)
+    region = models.CharField(blank=True, null=True, default=0)
     # number_of_units = models.IntegerField(blank=True, null=True, default=0)
     amenities = models.ForeignKey(Amenities, on_delete=models.CASCADE)
 

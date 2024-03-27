@@ -51,7 +51,6 @@ def clean_price_column(df):
         mode_value = df['price'].mode().iloc[0]
         df['price'].fillna(mode_value, inplace=True)
     except ValueError:
-        print()
         message = "Warning: Some values in the 'price' column could not be converted to numeric."
         log_progress(message)
         print (message)
@@ -125,7 +124,49 @@ def geocode_address(location):
         return geocode_address(location)
     except GeocoderUnavailable:
         return None
-    
+
+# Function to determine the region based on address, location, and postal code
+def get_region(row):
+    # Define the mapping of postal code prefixes to regions
+    postal_code_to_region = {
+        'B3H': 'South End Halifax',
+        'B3J': 'Downtown Halifax',
+        'B3K': 'North End Halifax',
+        'B3S': 'Clayton Park',
+        'B3M': 'Larry Uteck',
+        'B3L': 'West End of Halifax',
+        'B3N': 'Fairview Halifax',
+        'B3P': 'Cowie Hill',
+        'B3R': 'Spryfield Halifax',
+        'B3Z': 'Coastal communities around Halifax',
+        'B4B': 'Bedford Halifax',
+        'B4E': 'Sackville',
+        'B2G': 'Central halifax',
+        # Add other mappings as necessary
+    }
+    address = row['address'].lower() if pd.notnull(row['address']) else ''
+    location = str(row['location']).lower() if pd.notnull(row['location']) else ''
+
+    # Check if specific areas are mentioned in the address or location
+    if 'downtown' in address or 'downtown' in location:
+        return 'Downtown Halifax'
+    if 'south end' in address or 'south end' in location:
+        return 'South End Halifax'
+    if 'clayton park' in address or 'clayton park' in location:
+        return 'Clayton Park'
+    if 'west end' in address or 'west end' in location:
+        return 'West End of Halifax'
+    if 'north end' in address or 'north end' in location:
+        return 'North End Halifax'
+    if 'fairview' in address or 'fairview' in location:
+        return 'Fairview Halifax'
+
+    # If no specific area is mentioned, use the postal code to determine the region
+    postal_code = row['postal_code']
+    if pd.isnull(postal_code) or len(postal_code) < 3:
+        return "Unknown"
+    return postal_code_to_region.get(postal_code[:3], "Unknown")
+
 def transform(df):
     # Remove duplicate rows
     df.drop_duplicates(inplace=True)
@@ -224,7 +265,7 @@ def transform(df):
     df['rate_per_sqft'] = df['rate_per_sqft'].round(2)
     print('rate_per_sqft', ": ", df['rate_per_sqft'].dtype, df['rate_per_sqft'].count())
 
-#---------- Clean Move In Date Column
+#---------- add lat, long, location columns
     if 'address' in df.columns:
 		# Apply geolocation to each address and store the result in the original DataFrame
         df['location'] = df['address'].apply(geocode_address)
@@ -234,6 +275,15 @@ def transform(df):
         df['long'] = df['location'].apply(lambda loc: loc.longitude if loc else None)
     else:
         message = "The 'address' column does not exist in the CSV."
+        log_progress(message)
+        print(message)
+
+#---------- add key areas - regions
+    try:
+		# Apply the function to each row to create a new Region column
+        df['region'] = df.apply(get_region, axis=1)
+    except ValueError:
+        message = "There is an error in setting the region"
         log_progress(message)
         print(message)
     return df

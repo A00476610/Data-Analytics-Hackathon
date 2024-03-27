@@ -4,7 +4,7 @@ import django
 django.setup()
 from llm_core.models import Apartment, Amenities, Location  # Replace 'your_app' with your Django app name
 
-with open('D:/hackathon/Data-Analytics-Hackathon/halifax_rental_hackathon/llm_core/clean_kijiji_real_estate_data.csv', 'r', encoding='utf-8') as csvfile:
+with open('D:/hackathon/Data-Analytics-Hackathon/halifax_rental_hackathon/llm_core/updated_real_estate_data.csv', 'r') as csvfile:
     reader = csv.DictReader(csvfile)
     for row in reader:
         location = Location(
@@ -53,6 +53,11 @@ with open('D:/hackathon/Data-Analytics-Hackathon/halifax_rental_hackathon/llm_co
             num_bedrooms=float(row.get('num_bedrooms', 0)),  # Fill missing with 0
             num_bathrooms=float(row.get('num_bathrooms', 0)),  # Fill missing with 0
             size_sqft=(row.get('size_sqft', 0)),  # Fill missing with 0
+            postal_code = row['postal_code'],
+            rate_per_sqft = row['rate_per_sqft'],
+            lat = row['lat'], 
+            long = row['long'],
+            region = row['Region'],
             amenities = amenities,
         )
         apartment.save()

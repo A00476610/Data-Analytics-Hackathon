@@ -14,7 +14,8 @@ class AmenitiesAdmin(admin.ModelAdmin):
 
 @admin.register(Apartment)
 class ApartmentAdmin(admin.ModelAdmin):
-    list_display = ('id', 'title', 'rental_type', 'price', 'date_posted', 'move_in_date', 'agreement_type', 'num_bedrooms', 'num_bathrooms', 'size_sqft')
+    list_display = ('id', 'title', 'rental_type', 'price', 'date_posted', 'move_in_date', 'agreement_type', 'num_bedrooms', 'num_bathrooms', 'size_sqft', 'rate_per_sqft', 'lat', 'long', 'region'
+)
     search_fields = ('num_bedrooms', 'rental_type')
     list_filter = ('price', 'rental_type')
 
