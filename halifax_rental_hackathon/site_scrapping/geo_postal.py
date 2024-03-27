@@ -4,6 +4,21 @@ from geopy.exc import GeocoderTimedOut, GeocoderUnavailable
 
 geolocator = Nominatim(user_agent="rental_app")
 
+postal_code_to_region = {
+    'B3H': 'South End Halifax',
+    'B3J': 'Downtown Halifax',
+    'B3K': 'North End Halifax',
+    'B3M': 'Clayton Park',
+    'B3L': 'West End of Halifax',
+    'B3N': 'Fairview Halifax',
+    'B3S': 'Bayers Lake Halifax',
+    'B3P': 'Cowie Hill',
+    'B3R': 'Spryfield Halifax',
+    'B3Z': 'coastal communities around Halifax',
+    'B4B': 'Bedford Halifax',
+    'B4E': 'Sackville'
+}
+
 # Function to handle the geocoding
 def geocode_address(location):
     try:
@@ -12,6 +27,11 @@ def geocode_address(location):
         return geocode_address(location)
     except GeocoderUnavailable:
         return None
+    
+def get_region_from_postal_code(postal_code):
+    if pd.isnull(postal_code) or len(postal_code) < 3:
+        return "Unknown"
+    return postal_code_to_region.get(postal_code[:3], "Unknown")
 
 # Load the CSV file
 real_estate_data = pd.read_csv('real_estate_data.csv')
@@ -27,9 +47,6 @@ if 'address' in real_estate_data.columns:
 
     # Optionally, you can drop the 'location' column if it's no longer needed
     real_estate_data = real_estate_data.drop('location', axis=1)
-
-    # Display the updated DataFrame
-    print(real_estate_data.head())
 
     # Save the updated DataFrame to a new CSV file
     real_estate_data.to_csv('updated_real_estate_data.csv', index=False)
