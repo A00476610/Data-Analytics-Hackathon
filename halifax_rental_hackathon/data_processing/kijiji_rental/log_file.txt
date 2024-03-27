@@ -2979,3 +2979,51 @@
 2024-Mar-26-20:57:17 : Dropping column 'elevator_accessibility_features'
 2024-Mar-26-20:57:18 : Transform phase Ended
 2024-Mar-26-20:57:18 : Load to csv phase Started
+2024-Mar-26-21:20:29 : Preliminaries complete. Initiating ETL process.
+2024-Mar-26-21:20:29 : ETL Job Started
+2024-Mar-26-21:20:29 : Extract phase Started
+2024-Mar-26-21:20:29 : Extract phase Ended
+2024-Mar-26-21:20:29 : Transform phase Started
+2024-Mar-26-21:20:29 : Dropping column 'company'
+2024-Mar-26-21:20:29 : Dropping column 'elevator_accessibility_features'
+2024-Mar-26-21:21:10 : Preliminaries complete. Initiating ETL process.
+2024-Mar-26-21:21:10 : ETL Job Started
+2024-Mar-26-21:21:10 : Extract phase Started
+2024-Mar-26-21:21:10 : Extract phase Ended
+2024-Mar-26-21:21:10 : Transform phase Started
+2024-Mar-26-21:21:10 : Dropping column 'company'
+2024-Mar-26-21:21:10 : Dropping column 'elevator_accessibility_features'
+2024-Mar-26-21:23:13 : Preliminaries complete. Initiating ETL process.
+2024-Mar-26-21:23:13 : ETL Job Started
+2024-Mar-26-21:23:13 : Extract phase Started
+2024-Mar-26-21:23:13 : Extract phase Ended
+2024-Mar-26-21:23:13 : Transform phase Started
+2024-Mar-26-21:23:13 : Dropping column 'company'
+2024-Mar-26-21:23:13 : Dropping column 'elevator_accessibility_features'
+2024-Mar-26-21:23:33 : Preliminaries complete. Initiating ETL process.
+2024-Mar-26-21:23:33 : ETL Job Started
+2024-Mar-26-21:23:33 : Extract phase Started
+2024-Mar-26-21:23:33 : Extract phase Ended
+2024-Mar-26-21:23:33 : Transform phase Started
+2024-Mar-26-21:23:33 : Dropping column 'company'
+2024-Mar-26-21:23:33 : Dropping column 'elevator_accessibility_features'
+2024-Mar-26-21:27:30 : Transform phase Ended
+2024-Mar-26-21:27:30 : Load to csv phase Started
+2024-Mar-26-21:48:22 : Preliminaries complete. Initiating ETL process.
+2024-Mar-26-21:48:22 : ETL Job Started
+2024-Mar-26-21:48:22 : Extract phase Started
+2024-Mar-26-21:48:22 : Extract phase Ended
+2024-Mar-26-21:48:22 : Transform phase Started
+2024-Mar-26-21:48:22 : Dropping column 'company'
+2024-Mar-26-21:48:22 : Dropping column 'elevator_accessibility_features'
+2024-Mar-26-21:52:47 : Transform phase Ended
+2024-Mar-26-21:52:47 : Load to csv phase Started
+2024-Mar-26-21:53:11 : Preliminaries complete. Initiating ETL process.
+2024-Mar-26-21:53:11 : ETL Job Started
+2024-Mar-26-21:53:11 : Extract phase Started
+2024-Mar-26-21:53:11 : Extract phase Ended
+2024-Mar-26-21:53:11 : Transform phase Started
+2024-Mar-26-21:53:11 : Dropping column 'company'
+2024-Mar-26-21:53:11 : Dropping column 'elevator_accessibility_features'
+2024-Mar-26-21:57:47 : Transform phase Ended
+2024-Mar-26-21:57:47 : Load to csv phase Started

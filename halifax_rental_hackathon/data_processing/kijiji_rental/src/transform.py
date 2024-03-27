@@ -2,6 +2,8 @@
 import re
 import pandas as pd
 from src.logger import log_progress
+from geopy.geocoders import Nominatim
+from geopy.exc import GeocoderTimedOut, GeocoderUnavailable
 
 # Clean the 'Parking Included' column
 def clean_parking(value):
@@ -114,10 +116,20 @@ def clean_move_in_date(df):
         print(message)
         return df  # Return the DataFrame with potential errors
 
+# Function to handle the geocoding
+def geocode_address(location):
+    geolocator = Nominatim(user_agent="rental_app")
+    try:
+        return geolocator.geocode(location, timeout=10)
+    except GeocoderTimedOut:
+        return geocode_address(location)
+    except GeocoderUnavailable:
+        return None
+    
 def transform(df):
     # Remove duplicate rows
     df.drop_duplicates(inplace=True)
-    
+
 #-------- Extracting Apartments only
     # Filter for 'Apartment' rentals
     df = df[df['rental_type'] == 'Apartment']
@@ -211,4 +223,17 @@ def transform(df):
     # # Round rate_per_sqft to 2 decimal places
     df['rate_per_sqft'] = df['rate_per_sqft'].round(2)
     print('rate_per_sqft', ": ", df['rate_per_sqft'].dtype, df['rate_per_sqft'].count())
+
+#---------- Clean Move In Date Column
+    if 'address' in df.columns:
+		# Apply geolocation to each address and store the result in the original DataFrame
+        df['location'] = df['address'].apply(geocode_address)
+
+		# Extract latitude and longitude, checking for None
+        df['lat'] = df['location'].apply(lambda loc: loc.latitude if loc else None)
+        df['long'] = df['location'].apply(lambda loc: loc.longitude if loc else None)
+    else:
+        message = "The 'address' column does not exist in the CSV."
+        log_progress(message)
+        print(message)
     return df
