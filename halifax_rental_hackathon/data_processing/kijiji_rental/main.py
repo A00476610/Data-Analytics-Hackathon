@@ -9,8 +9,8 @@ def main():
     # table_name = "kijiji" - db table name
     table_attributes = ['title', 'price', 'date_posted', 'address', 'rental_type', 'num_bedrooms', 'num_bathrooms', 'url', 'company', 'company_type', 'num_parking', 'agreement_type',	'pet_friendly',	'move_in_date', 'size_sqft', 'furnished', 'air_conditioning', 'smoking_permitted', 'elevator_accessibility_features', 'barrier_free_entrances_ramps', 'visual_aids', 'accessible_washrooms_in_suite', 'heat', 'hydro', 'water', 'cable_tv', 'internet', 'laundry_unit', 'laundry_building', 'dishwasher', 'fridge_freezer', 'yard', 'balcony', 'building_security', 'building_elevator', 'building_gym', 'bycycle_parking', 'storage_space']
     # db_path = "data/World_Economies.db"
-    RAW_CSV_PATH = "../raw_data/kijiji_real_estate_data.csv"
-    CLEAN_CSV_PATH = "../clean_data/clean_kijiji_real_estate_data.csv"
+    RAW_CSV_PATH = "../raw_data/long_term_rental_kijiji.csv"
+    CLEAN_CSV_PATH = "../clean_data/clean_long_term_rental_kijiji.csv"
     # query_statement = "SELECT"
     log_progress("Preliminaries complete. Initiating ETL process.")
 

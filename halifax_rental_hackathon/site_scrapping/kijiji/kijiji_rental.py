@@ -9,8 +9,10 @@ from bs4 import BeautifulSoup
 
 class Kijiji_Rental:
 
-    def __init__(self, base_url, csv_path, csv_headers):
+    def __init__(self, base_url, category_url, city_code, csv_path, csv_headers):
         self.base_url = base_url
+        self.category_url = category_url
+        self.city_code = city_code
         self.csv_path = csv_path
         df = pd.DataFrame(columns=csv_headers)
         df.to_csv(csv_path, index=False)
@@ -30,26 +32,6 @@ class Kijiji_Rental:
         soup = BeautifulSoup(response.text, 'lxml')
         return soup
 
-    def get_coordinates(self, soup):
-        """Extracts latitude and longitude from a map link within the provided soup object."""
-        try:
-            map_image = soup.find('img', class_='mapImage-2944462615')  # Adjust selector if needed
-            if map_image:
-                src = map_image.get('src')
-                print(src) 
-                # Use regular expression to extract center coordinates from the src 
-                match = re.search(r'center=(-?\d+\.\d+),(-?\d+\.\d+)', src)
-                if match:
-                    return match.group(1), match.group(2)  # Return latitude, longitude
-                else:
-                    print("Coordinates not found in image src.")
-                    return None
-
-            else:
-                return None
-
-        except AttributeError:
-            return None 
     def get_ad_links(self, url):
         # WEB CRAWLING
         # find all of the relevant ads
@@ -286,7 +268,7 @@ class Kijiji_Rental:
         return multiline_attributes
 
     def page_iterator(self):
-        page_url = BASE_URL + '/b-for-rent/city-of-halifax/c30349001l1700321'
+        page_url = self.base_url + self.category_url + self.city_code
         page_no = 1
         while self.url_exists(page_url):
 
@@ -297,6 +279,7 @@ class Kijiji_Rental:
             ## create a list to store dictionaries of our results
             data_list = []
             ad_no = 1
+            print('page url: ', page_url)
             for advert in ad_links:
                 print('\n######################################################')
                 print('Page: ', page_no, 'Ad No.', ad_no)
@@ -307,9 +290,7 @@ class Kijiji_Rental:
 
                 # Get ad title
                 title = self.get_title(soup)
-                coords = self.get_coordinates(soup)
-                print(coords)
-                break
+
                 # get ad price
                 price = self.get_price(soup)
 
@@ -355,14 +336,19 @@ class Kijiji_Rental:
             # save the final dataframe to a csv file
             df.to_csv(self.csv_path, mode='a', header=False, index=False)
             page_no += 1
-            page_url = self.base_url + '/b-for-rent/city-of-halifax/page-' + str(page_no) + '/c30349001l1700321'
+            page_url = self.base_url + self.category_url + '/page-' + str(page_no) + self.city_code
 
 
 # Main
 if __name__ == '__main__':
      # base URL for the Kijiji website
+    # Long term rental - https://www.kijiji.ca/b-apartments-condos/city-of-halifax/c37l1700321
+    # Short term rental - https://www.kijiji.ca/b-short-term-rental/city-of-halifax/c42l1700321
     BASE_URL = 'https://www.kijiji.ca'
-    CSV_PATH = 'kijiji_real_estate_data.csv'
+    CATEGORY_URL = '/b-apartments-condos/city-of-halifax'
+    CITY_CODE = '/c37l1700321'
+    CSV_PATH = 'long_term_rental_kijiji.csv'
+    #CSV_PATH = 'short_term_rental_kijiji.csv'
     CSV_HEADERS = ['title', 'price', 'date_posted', 'address', 'rental_type', 'num_bedrooms', 'num_bathrooms', 'url', 'company', 'company_type',
                 'Parking Included',
                 'Agreement Type',
@@ -393,5 +379,5 @@ if __name__ == '__main__':
                 'bycycle_parking',
                 'storage_space']
 
-    kijiji_rental = Kijiji_Rental(BASE_URL, CSV_PATH, CSV_HEADERS)
-    kijiji_rental.page_iterator()
+    long_term_kijiji_rental = Kijiji_Rental(BASE_URL, CATEGORY_URL, CITY_CODE, CSV_PATH, CSV_HEADERS)
+    long_term_kijiji_rental.page_iterator()

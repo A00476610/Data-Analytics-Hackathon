@@ -17,7 +17,7 @@ def clean_parking(value):
 
 
 def clean_bedroom_data(col):
-   mappings = {"bachelor/studio": 0}  # Expand with other direct mappings if needed
+   mappings = {"bachelor/studio": 1}  # Expand with other direct mappings if needed
 
    col = col.str.lower() 
    col.replace(mappings, inplace=True)
@@ -41,17 +41,20 @@ def clean_bedroom_data(col):
    col.fillna(mode_value, inplace=True)
    return col
 
-# Clean the 'Size (sqft)' column
-def clean_price(value):
+def clean_price_column(df):
+    # Conversion with error handling
     try:
-        value = str(value).replace(',', '')
-        value = value.replace('.', '')
-        return float(value)
+        df['price'] = pd.to_numeric(df['price'])
+        # Fill empty cells with the mode value (most frequent value)
+        mode_value = df['price'].mode().iloc[0]
+        df['price'].fillna(mode_value, inplace=True)
     except ValueError:
-        message = "Warning: Some values in the 'price' could not be converted to numbers:" + str(value)
+        print()
+        message = "Warning: Some values in the 'price' column could not be converted to numeric."
         log_progress(message)
         print (message)
-        return float('nan')  # Replace with NaN for better handling
+
+    return df
 
 # Clean the 'Size (sqft)' column
 def clean_sqft(value):
@@ -96,8 +99,29 @@ def extract_postal_code(address):
     else:
         return None
 
+def clean_move_in_date(df):
+    try:
+        df['move_in_date'] = pd.to_datetime(df['move_in_date'], errors='coerce')  # Convert to datetime
+        df['move_in_date'] = df['move_in_date'].dt.strftime('%Y-%m-%dT%H:%M:%S.%fZ')  # Format
+        df['move_in_date'] = df['move_in_date'].interpolate('linear')  # Interpolate missing dates 
+        df['move_in_date'] = df['move_in_date'].fillna(method='bfill')
+        df['move_in_date'] = pd.to_datetime(df['move_in_date'], errors='coerce')
+        return df
+
+    except ValueError as e:
+        message = f"Error encountered during date conversion: {e}"
+        log_progress(message)
+        print(message)
+        return df  # Return the DataFrame with potential errors
+
 def transform(df):
+    # Remove duplicate rows
+    df.drop_duplicates(inplace=True)
     
+#-------- Extracting Apartments only
+    # Filter for 'Apartment' rentals
+    df = df[df['rental_type'] == 'Apartment']
+        
 #-------- Deleting company columns
     message = "Dropping column 'company'"
     log_progress(message)
@@ -106,9 +130,12 @@ def transform(df):
     log_progress(message)
     del df['elevator_accessibility_features']
 
+#---------- Processing 'price'
+    df = clean_price_column(df.copy())
+
     # Map int to cleaning functions
     apply_cols = {
-        'price': clean_price,
+        # 'price': clean_price_column,
         'num_parking': clean_parking,
         'size_sqft': clean_sqft,
     }
@@ -169,24 +196,19 @@ def transform(df):
 #---------- Clean Move In Date Column
     # Convert move_in column to datetime
     print('move_in_date', ": ", df['move_in_date'].dtype, df['move_in_date'].count())
-    try:
-        df['move_in_date'] = pd.to_datetime(df['move_in_date'], format='%d-%b-%y') 
-        # Interpolate AND assign back to the column
-        df['move_in_date'] = df['move_in_date'].interpolate(method='linear')
-    except ValueError:
-        message = "Warning: Some values in the move_in_date could not be converted to numbers:" + str(ValueError)
-        log_progress(message)
-        print (message)
+    # Apply the function to your DataFrame
+    df = clean_move_in_date(df.copy()) 
+    
     print('move_in_date', ": ", df['move_in_date'].dtype, df['move_in_date'].count())
     
-    # Apply the function to the 'address' column and create a new column 'postal_code'
+    # # Apply the function to the 'address' column and create a new column 'postal_code'
     df['postal_code'] = df['address'].apply(extract_postal_code)
     print('postal_code', ": ", df['postal_code'].dtype, df['postal_code'].count())
     
-    # Calculate rate per square foot
+    # # Calculate rate per square foot
     df['rate_per_sqft'] = df['price'] / df['size_sqft']
 
-    # Round rate_per_sqft to 2 decimal places
+    # # Round rate_per_sqft to 2 decimal places
     df['rate_per_sqft'] = df['rate_per_sqft'].round(2)
     print('rate_per_sqft', ": ", df['rate_per_sqft'].dtype, df['rate_per_sqft'].count())
     return df
