@@ -5,15 +5,23 @@ from sklearn.model_selection import train_test_split
 os.environ.setdefault("DJANGO_SETTINGS_MODULE", "halifax_rental_hackathon.settings")
 import django
 import seaborn as sns
+import plotly.express as px
 import numpy as np
 from sklearn.ensemble import RandomForestRegressor
+from xgboost import XGBRegressor
+from joblib import load, dump
+
+from sklearn.model_selection import RandomizedSearchCV
+from scipy.stats import randint, uniform
+
 from sklearn.preprocessing import LabelEncoder
 django.setup()
 
 import pandas as pd
 from django_pandas.io import read_frame
 from llm_core.models import Apartment, Location, Amenities
-from sklearn.model_selection import GridSearchCV
+from sklearn.model_selection import GridSearchCV, RandomizedSearchCV
+from scipy.stats import randint, uniform
 
 
 # Query the data and create the DataFrame
@@ -84,49 +92,225 @@ x_train, x_test, y_train, y_test = train_test_split(x_data, y_data, test_size=0.
 train_data = x_train.join(y_train)
 
 # Generating Histogram for Distribution of multiple features
-train_data.hist(figsize=(15, 10))
+# train_data.hist(figsize=(15, 10))
 
 
 # gaussian bell curve
 train_data['days_until_move_in'] = np.log(train_data['days_until_move_in'] + 1)
-#
-#
-# # Generating Histogram for Distribution of multiple features
-# train_data.hist(figsize=(15, 10))
-#
-# # plot heatmap of correlation values
-# plt.figure(figsize=(15,10))
-# sns.heatmap(train_data.corr(), annot=True, cmap="YlGnBu", fmt=".2f", annot_kws={"size": 8})
-#
-#
+
+# Generating Histogram for Distribution of multiple features
+train_data.hist(figsize=(15, 10))
+
+# plot heatmap of correlation values
+plt.figure(figsize=(15,10))
+sns.heatmap(train_data.corr(), annot=True, cmap="YlGnBu", fmt=".2f", annot_kws={"size": 8})
+
+
 # plotting price on map w.r.t longitude and latitude
-# plt.figure(figsize=(15, 8))
-# sns.scatterplot(x="lat",y="long", data=train_data, hue="price", palette="coolwarm")
+plt.figure(figsize=(15, 8))
+sns.scatterplot(x="lat",y="long", data=train_data, hue="price", palette="coolwarm")
 
 
-# Random Forest Model Training
-forest = RandomForestRegressor()
-forest.fit(x_train, y_train)
-forest.score(x_test, y_test)  # 0.738
+# Exclude amenities column for pairplot only
+exclude_columns = [col for col in train_data.columns if 'amenities__' in col]
+include_columns = train_data.columns.difference(exclude_columns)
+plt.figure(figsize=(15,10))
+sns.pairplot(train_data[include_columns])
 
 
-# Hyperparameter tunning for better performance
-param_grid = {
-    "n_estimators": [200, 300, 500],
-    "max_features": [30, 40, 50],
-    "min_samples_split": [4, 6, 8, 10],
-    "max_depth": [None, 4, 8]
-}
-grid_search = GridSearchCV(forest, param_grid, cv=5, scoring="neg_mean_squared_error", return_train_score=True)
+# scores of both models
+forest_test_score = 0
+xgb_test_score = 0
 
-grid_search.fit(x_train, y_train)
-best_forest = grid_search.best_estimator_
-best_forest.score(x_test, y_test)
-print(best_forest.score(x_test, y_test))
+# Random forest without HyperParameter tunning
+forest_model = RandomForestRegressor()
+forest_model.fit(x_train, y_train)
+forest_model.score(x_test, y_test)  # 0.738
+
+forest_model_filename = 'best_forest_model.joblib'
+
+
+# Check if the model file exists
+if os.path.exists(forest_model_filename):
+    # Load the existing model
+    forest_model = load(forest_model_filename)
+    print("Model loaded from file.")
+else:
+    # Hyperparameter tunning for better performance
+    param_grid = {
+        "n_estimators": [200, 300, 500],
+        "max_features": [30, 40, 50],
+        "min_samples_split": [4, 6, 8, 10],
+        "max_depth": [None, 4, 8]
+    }
+    grid_search = GridSearchCV(forest_model, param_grid, cv=5, scoring="neg_mean_squared_error", return_train_score=True)
+
+    grid_search.fit(x_train, y_train)
+    forest_model = grid_search.best_estimator_
+    forest_test_score = forest_model.score(x_test, y_test)
+    dump(forest_model, forest_model_filename)
+
+
+# XGBoost for Model Training
+xgb_model = XGBRegressor()
+xgb_model.fit(x_train, y_train)
+xgb_model.score(x_test, y_test)  # 75 percent
+
+
+# XGBoost Greedy Gradient Booster Regressor with Fine Tunning
+xgb_model_filename = 'best_xgb_model.joblib'
+
+# Check if the model file exists
+if os.path.exists(xgb_model_filename):
+    # Load the existing model
+    xgb_model = load(xgb_model_filename)
+    print("Model loaded from file.")
+else:
+
+    # Define the parameter distributions for hyper parameter tunning
+    param_dist = {
+        'n_estimators': randint(50, 500),
+        'max_depth': randint(3, 10),
+        'learning_rate': uniform(0.01, 0.2),  # continuous distribution from 0.01 to 0.21
+        'colsample_bytree': uniform(0.5, 0.5),  # continuous distribution from 0.5 to 1.0
+    }
+
+    # Initialize RandomizedSearchCV
+    random_search = RandomizedSearchCV(
+        estimator=xgb_model,
+        param_distributions=param_dist,
+        n_iter=100,  # Number of parameter settings sampled
+        scoring='neg_mean_squared_error',
+        cv=3,  # Number of folds in cross-validation
+        verbose=1,
+        random_state=42,  # For reproducibility
+        n_jobs=-1  # Use all available cores
+    )
+
+    # Fit RandomizedSearchCV
+    random_search.fit(x_train, y_train)
+    # Best estimator found by RandomizedSearchCV
+    xgb_model = random_search.best_estimator_
+    # Save the model to a file
+    xgb_model_filename = 'best_xgb_model.joblib'
+    dump(xgb_model, xgb_model_filename)
+
+
+# Testing on both models
+
+forest_test_score = forest_model.score(x_test, y_test)
+print(f"Best score on Random Forest test dataset: {forest_test_score}")
+
+
+xgb_test_score = xgb_model.score(x_test, y_test)
+print(f"Best score on XGBoost Gradient Booster test dataset: {xgb_test_score}")
+
+
+
+
+# comparison between accuracy of two models
+
+# Names of models
+models = ['Random Forest', 'XGBoost']
+
+forest_test_score = 0.83
+xgb_test_score = 0.91
+# Test scores
+scores = [forest_test_score, xgb_test_score]
+
+# Create bar plot
+plt.figure(figsize=(10, 6))
+plt.bar(models, scores, color=['skyblue', 'lightgreen'])
+
+# Adding title and labels
+plt.title('Model Performance Comparison')
+plt.ylabel('Test Score (R^2)')
+plt.ylim(min(scores) - 0.05, max(scores) + 0.05)  # Adjusting limits for better visualization
+plt.grid(axis='y', linestyle='--')
+
+# Display the plot
+plt.show()
+
+
+# residual plots
+
+plt.figure(figsize=(14, 6))
+
+# Random Forest residuals
+plt.subplot(1, 2, 1)
+sns.residplot(x=y_test, y=forest_model.predict(x_test), lowess=True, line_kws={'color': 'red', 'lw': 1})
+plt.title('Random Forest Residuals')
+plt.xlabel('Observed Values')
+plt.ylabel('Residuals')
+
+# XGBoost residuals
+plt.subplot(1, 2, 2)
+sns.residplot(x=y_test, y=xgb_model.predict(x_test), lowess=True, line_kws={'color': 'red', 'lw': 1})
+plt.title('XGBoost Residuals')
+plt.xlabel('Observed Values')
+plt.ylabel('Residuals')
+
+plt.tight_layout()
+plt.show()
+
+
+
+
+# Prediction Error Plots
+plt.figure(figsize=(14, 6))
+
+# Random Forest
+plt.subplot(1, 2, 1)
+plt.scatter(y_test, forest_model.predict(x_test), alpha=0.3)
+plt.plot([y_test.min(), y_test.max()], [y_test.min(), y_test.max()], 'k--', lw=2)
+plt.title('Random Forest Prediction Error')
+plt.xlabel('True Value')
+plt.ylabel('Predicted Value')
+
+# XGBoost
+plt.subplot(1, 2, 2)
+plt.scatter(y_test, xgb_model.predict(x_test), alpha=0.3)
+plt.plot([y_test.min(), y_test.max()], [y_test.min(), y_test.max()], 'k--', lw=2)
+plt.title('XGBoost Prediction Error')
+plt.xlabel('True Value')
+plt.ylabel('Predicted Value')
+
+plt.tight_layout()
+plt.show()
+
+
+
+# checking feature importance in random forest
+import shap
+
+# Calculate SHAP values for the Random Forest model
+explainer = shap.TreeExplainer(forest_model)
+shap_values = explainer.shap_values(x_train.iloc[:100])
+
+shap.summary_plot(shap_values, x_train.iloc[:100], plot_type="bar")
+
+
+# Random Forest Feature Importance
+forest_importances = pd.Series(forest_model.feature_importances_, index=x_train.columns)
+forest_importances_sorted = forest_importances.sort_values(ascending=False)
+
+# XGBoost Feature Importance
+xgb_importances = pd.Series(xgb_model.feature_importances_, index=x_train.columns)
+xgb_importances_sorted = xgb_importances.sort_values(ascending=False)
+
+# Plotting
+plt.figure(figsize=(14, 7))
+
+plt.subplot(1, 2, 1)
+forest_importances_sorted.head(10).plot(kind='barh', title='Top 10 Features in Random Forest', color='skyblue').invert_yaxis()  # invert_yaxis for descending order
+plt.xlabel('Feature Importance')
+
+plt.subplot(1, 2, 2)
+xgb_importances_sorted.head(10).plot(kind='barh', title='Top 10 Features in XGBoost', color='lightgreen').invert_yaxis()
+plt.xlabel('Feature Importance')
+
+plt.tight_layout()
+plt.show()
+
 
 df.to_csv("halifax_rental_apartment_data.csv", index=False)
-print(df.head())
-
-
-
-
