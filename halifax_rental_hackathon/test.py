@@ -357,3 +357,6 @@ plt.show()
 
 
 df.to_csv("halifax_rental_apartment_data.csv", index=False)
+
+
+

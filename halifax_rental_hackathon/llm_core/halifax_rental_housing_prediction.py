@@ -10,6 +10,7 @@ import numpy as np
 from sklearn.ensemble import RandomForestRegressor
 from xgboost import XGBRegressor
 from joblib import load, dump
+import shap
 
 from sklearn.model_selection import RandomizedSearchCV
 from scipy.stats import randint, uniform
@@ -208,6 +209,52 @@ print(f"Best score on XGBoost Gradient Booster test dataset: {xgb_test_score}")
 
 
 
+
+
+# Assuming initial scores before tuning
+initial_forest_score = 0.738  # Example initial score for Random Forest
+initial_xgb_score = 0.75  # Example initial score for XGBoost
+
+# Scores after hyperparameter tuning
+# Assume these are the scores you obtained after tuning
+tuned_forest_score = forest_test_score
+tuned_xgb_score = xgb_test_score
+
+# Names of models
+models = ['Random Forest', 'XGBoost']
+
+# Scores before tuning
+initial_scores = [initial_forest_score, initial_xgb_score]
+
+# Scores after tuning
+tuned_scores = [tuned_forest_score, tuned_xgb_score]
+
+# Set up the bar width
+barWidth = 0.3
+
+# Set position of bar on X axis
+r1 = np.arange(len(models))
+r2 = [x + barWidth for x in r1]
+
+# Make the plot
+plt.figure(figsize=(10, 6))
+plt.bar(r1, initial_scores, color='skyblue', width=barWidth, edgecolor='grey', label='Initial')
+plt.bar(r2, tuned_scores, color='lightgreen', width=barWidth, edgecolor='grey', label='Tuned')
+
+# Add xticks on the middle of the group bars
+plt.xlabel('Model', fontweight='bold')
+plt.xticks([r + barWidth for r in range(len(models))], models)
+plt.ylabel('Test Score (R^2)')
+plt.title('Model Performance: Initial vs. Tuned')
+
+# Create legend & Show graphic
+plt.legend()
+plt.show()
+
+
+
+
+
 # comparison between accuracy of two models
 
 # Names of models
@@ -220,7 +267,7 @@ scores = [forest_test_score, xgb_test_score]
 
 # Create bar plot
 plt.figure(figsize=(10, 6))
-plt.bar(models, scores, color=['skyblue', 'lightgreen'])
+plt.bar(models, scores, color=['skyblue', 'blue'])
 
 # Adding title and labels
 plt.title('Model Performance Comparison')
@@ -254,8 +301,6 @@ plt.tight_layout()
 plt.show()
 
 
-
-
 # Prediction Error Plots
 plt.figure(figsize=(14, 6))
 
@@ -279,9 +324,7 @@ plt.tight_layout()
 plt.show()
 
 
-
 # checking feature importance in random forest
-import shap
 
 # Calculate SHAP values for the Random Forest model
 explainer = shap.TreeExplainer(forest_model)
@@ -313,7 +356,7 @@ plt.tight_layout()
 plt.show()
 
 
-
-
-
 df.to_csv("halifax_rental_apartment_data.csv", index=False)
+
+
+
