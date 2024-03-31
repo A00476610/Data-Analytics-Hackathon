@@ -1,4 +1,5 @@
 import pandas as pd
+import os
 
 class Parking_444_Rent:
 
@@ -49,7 +50,8 @@ class Parking_444_Rent:
         df.to_csv(self.clean_csv, index=False)
 
 if __name__ == '__main__':
-    RAW_CSV = "D:/hackathon/Data-Analytics-Hackathon/halifax_rental_hackathon/scrapers/444_rent/parking_444_rent.csv"
+    RAW_CSV = os.path.dirname(__file__).split('data')[0] + 'site_scrapping/444_rent/parking_444_rent.csv'
+    # RAW_CSV = "D:/hackathon/Data-Analytics-Hackathon/halifax_rental_hackathon/scrapers/444_rent/parking_444_rent.csv"
     CLEAN_CSV = '../clean_data/clean_parking_444_rent.csv'
 
     parking_444_rent = Parking_444_Rent(RAW_CSV, CLEAN_CSV)

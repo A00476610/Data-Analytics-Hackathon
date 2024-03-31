@@ -50,6 +50,7 @@ class Apartment(models.Model):
     region = models.CharField(blank=True, null=True, default=0)
     # number_of_units = models.IntegerField(blank=True, null=True, default=0)
     amenities = models.ForeignKey(Amenities, on_delete=models.CASCADE)
+    predicted_price = models.FloatField(default=0, blank=True, null=True)
 
 # class Commercial(models.Model):
 #     location = models.ForeignKey(Location, on_delete=models.CASCADE)
