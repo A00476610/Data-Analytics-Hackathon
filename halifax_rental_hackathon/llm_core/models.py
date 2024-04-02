@@ -94,3 +94,28 @@ class Parking(models.Model):
 #     apartment = models.ForeignKey(Apartment, on_delete=models.CASCADE, null=True, blank=True)
 #     commercial = models.ForeignKey(Commercial, on_delete=models.CASCADE, null=True, blank=True)
 #     parking = models.ForeignKey(Parking, on_delete=models.CASCADE, null=True, blank=True)
+
+class Construction(models.Model):
+    STATUS_CHOICES = (
+        ('Proposed', 'Proposed'),
+        ('Under Development', 'Under Development'),
+        ('Completed', 'Completed'),
+    )
+
+    PROPERTY_TYPE_CHOICES = (
+        ('Condo', 'Condo'),
+        ('Rental', 'Rental'),
+    )
+
+    property_name = models.CharField(max_length=200)
+    civic_address = models.CharField(max_length=200)
+    floors = models.IntegerField()
+    units = models.IntegerField()
+    developer = models.CharField(max_length=100)
+    status = models.CharField(max_length=20, choices=STATUS_CHOICES)
+    website = models.URLField()
+    property_type = models.CharField(max_length=10, choices=PROPERTY_TYPE_CHOICES)
+    completion_estimate = models.CharField(max_length=50, blank=True)
+    retail_sq_ft = models.IntegerField(null=True, blank=True)
+    district = models.CharField(max_length=100)
+    image_url = models.URLField(max_length=250)
