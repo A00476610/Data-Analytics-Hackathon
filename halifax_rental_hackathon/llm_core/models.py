@@ -4,6 +4,10 @@ from django.utils.timezone import now
 class Location(models.Model):
     address = models.CharField(max_length=255, blank=True, default='')
 
+    class Meta:
+        db_table = 'location'
+
+
 class Amenities(models.Model):
     num_parking = models.FloatField(default=False)
     pet_friendly = models.CharField(default=False)
@@ -30,6 +34,9 @@ class Amenities(models.Model):
     bycycle_parking = models.BooleanField(default=False)
     storage_space = models.BooleanField(default=False)
 
+    class Meta:
+        db_table = 'amenities'
+
 class Apartment(models.Model):
     location = models.ForeignKey(Location, on_delete=models.CASCADE)
     title = models.CharField(max_length=255, blank=True, default='')
@@ -51,6 +58,9 @@ class Apartment(models.Model):
     # number_of_units = models.IntegerField(blank=True, null=True, default=0)
     amenities = models.ForeignKey(Amenities, on_delete=models.CASCADE)
     predicted_price = models.FloatField(default=0, blank=True, null=True)
+
+    class Meta:
+        db_table = 'apartment'
 
 # class Commercial(models.Model):
 #     location = models.ForeignKey(Location, on_delete=models.CASCADE)
@@ -84,6 +94,9 @@ class Parking(models.Model):
     term = models.CharField(max_length=255, blank=True, null=True, default='')
     termination_policy = models.CharField(max_length=255, blank=True, null=True, default='')
     deposit = models.CharField(blank=True, null=True, default=0)
+
+    class Meta:
+        db_table = 'parking'
 
 # class PredictionResults(models.Model):
 #     location = models.ForeignKey(Location, on_delete=models.CASCADE, null=True, blank=True)
@@ -119,3 +132,6 @@ class Construction(models.Model):
     retail_sq_ft = models.IntegerField(null=True, blank=True)
     district = models.CharField(max_length=100)
     image_url = models.URLField(max_length=250)
+
+    class Meta:
+        db_table = 'construction'
