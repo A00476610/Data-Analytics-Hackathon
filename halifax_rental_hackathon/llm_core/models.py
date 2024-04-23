@@ -33,6 +33,7 @@ class Amenities(models.Model):
     building_gym = models.BooleanField(default=False)
     bycycle_parking = models.BooleanField(default=False)
     storage_space = models.BooleanField(default=False)
+    amenities_count = models.IntegerField(default=0)
 
     class Meta:
         db_table = 'amenities'
@@ -135,3 +136,40 @@ class Construction(models.Model):
 
     class Meta:
         db_table = 'construction'
+
+
+from django.db import models
+
+class TransformedAmenities(models.Model):
+    num_parking = models.IntegerField(default=0)
+    pet_friendly = models.IntegerField(default=0)
+    furnished = models.IntegerField(default=0)
+    air_conditioning = models.IntegerField(default=0)
+    smoking_permitted = models.IntegerField(default=0)
+    barrier_free_entrances_ramps = models.IntegerField(default=0)
+    visual_aids = models.IntegerField(default=0)
+    accessible_washrooms_in_suite = models.IntegerField(default=0)
+    heat = models.IntegerField(default=0)
+    hydro = models.IntegerField(default=0)
+    water = models.IntegerField(default=0)
+    cable_tv = models.IntegerField(default=0)
+    internet = models.IntegerField(default=0)
+    laundry_unit = models.IntegerField(default=0)
+    laundry_building = models.IntegerField(default=0)
+    dishwasher = models.IntegerField(default=0)
+    fridge_freezer = models.IntegerField(default=0)
+    yard = models.IntegerField(default=0)
+    balcony = models.IntegerField(default=0)
+    building_security = models.IntegerField(default=0)
+    building_elevator = models.IntegerField(default=0)
+    building_gym = models.IntegerField(default=0)
+    bycycle_parking = models.IntegerField(default=0)
+    storage_space = models.IntegerField(default=0)
+    amenities_count = models.IntegerField(default=0)
+
+    class Meta:
+        db_table = 'transformed_amenities'
+
+
+
+
